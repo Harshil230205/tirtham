@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Pilgrimage Planner • Map</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <script src="app.js" defer></script>
+  <script defer>
+    document.addEventListener("DOMContentLoaded", ()=>{
+      requireAuth(); renderUserBadge(); highlightNav("map");
+      const temple = PP.get("pp_temple") || "Temple";
+      document.getElementById("title").textContent = "Map • " + temple;
+      const q = encodeURIComponent(temple);
+      document.getElementById("gmaps").href = "https://www.google.com/maps/search/?api=1&query="+q;
+      // Basic OpenStreetMap embed focused on a general area; user can still open full map.
+      document.getElementById("osm").src = "https://www.openstreetmap.org/export/embed.html?bbox=68.0,6.0,98.0,37.0&layer=mapnik&marker=21.0,78.0";
+    });
+  </script>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <div class="brand-badge">PP</div>
+      <div class="brand" id="title">Map</div>
+      <div class="user-avatar" style="margin-left:auto">U</div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="card">
+      <h3 class="card-title">Directions</h3>
+      <p class="card-sub">Open interactive map and navigation.</p>
+      <div style="height:10px"></div>
+      <iframe id="osm" title="Map" style="width:100%;height:260px;border:1px solid #e5e7eb;border-radius:12px"></iframe>
+      <div style="height:10px"></div>
+      <div class="row">
+        <a id="gmaps" class="btn block" target="_blank" rel="noopener">Open in Google Maps</a>
+        <button class="btn ghost block" onclick="window.location.href='pass.html'">Back to Pass</button>
+      </div>
+    </div>
+  </main>
+
+  <nav class="navbar">
+    <div class="bar">
+      <a class="navlink" data-page="dash" href="index.html"><span>Dashboard</span></a>
+      <a class="navlink" data-page="pass" href="pass.html"><span>Pass</span></a>
+      <a class="navlink active" data-page="map" href="map.html"><span>Map</span></a>
+      <a class="navlink" data-page="sos" href="sos.html"><span>SOS</span></a>
+    </div>
+  </nav>
+</body>
+</html>

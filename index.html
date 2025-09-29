@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Pilgrimage Planner • Dashboard</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <script src="app.js" defer></script>
+  <script defer>
+    document.addEventListener("DOMContentLoaded", ()=>{
+      requireAuth();
+      renderUserBadge();
+      highlightNav("dash");
+
+      document.querySelectorAll("[data-book]").forEach(btn=>{
+        btn.addEventListener("click", ()=>{
+          const temple = btn.getAttribute("data-book");
+          PP.set("pp_temple", temple);
+          window.location.href="booking.html";
+        });
+      });
+    });
+  </script>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <div class="brand-badge">PP</div>
+      <div class="brand">Pilgrimage Planner</div>
+      <div class="user-badge">
+        <span class="badge"><span>Logged in</span></span>
+        <div class="user-avatar">U</div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/screen.png-1beGtszJSaaWov1SiNxawepUx2QLnr.jpeg" alt="Discover Sacred Journeys banner"/>
+      <div class="overlay"></div>
+      <div class="content">
+        <h1 class="text-balance">Discover Sacred Journeys</h1>
+        <p>Explore destinations and book your slot.</p>
+      </div>
+    </section>
+
+    <section class="container">
+      <h3 class="card-title" style="margin-bottom:10px">Popular Destinations</h3>
+      <div class="grid">
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9c?q=80&w=600" alt="Temple of Serenity"/>
+          <h4 class="card-title" style="margin-top:8px">Temple of Serenity</h4>
+          <p class="card-sub">Peaceful atmosphere and spiritual calm.</p>
+          <div style="height:8px"></div>
+          <button class="btn block" data-book="Temple of Serenity">Book</button>
+        </div>
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=600" alt="Mount Zion Sanctuary"/>
+          <h4 class="card-title" style="margin-top:8px">Mount Zion Sanctuary</h4>
+          <p class="card-sub">Breathtaking views and tranquility.</p>
+          <div style="height:8px"></div>
+          <button class="btn block" data-book="Mount Zion Sanctuary">Book</button>
+        </div>
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=600" alt="Sacred River Retreat"/>
+          <h4 class="card-title" style="margin-top:8px">Sacred River Retreat</h4>
+          <p class="card-sub">Reflection and rejuvenation by the river.</p>
+          <div style="height:8px"></div>
+          <button class="btn block" data-book="Sacred River Retreat">Book</button>
+        </div>
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=600" alt="Valley of Whispers"/>
+          <h4 class="card-title" style="margin-top:8px">Valley of Whispers</h4>
+          <p class="card-sub">Ancient paths and rich history.</p>
+          <div style="height:8px"></div>
+          <button class="btn block" data-book="Valley of Whispers">Book</button>
+        </div>
+      </div>
+
+      <div style="height:16px"></div>
+      <div class="row">
+        <button class="btn secondary block" onclick="window.location.href='map.html'">Open Map</button>
+        <button class="btn ghost block" onclick="PP.clearBooking();alert('Cleared selected booking.');">Clear Booking</button>
+      </div>
+
+      <div style="height:18px"></div>
+      <h3 class="card-title">Your Profile</h3>
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div class="user-avatar">U</div>
+          <div>
+            <div><b data-pp-username>—</b></div>
+            <div class="meta">User ID: <b data-pp-userid>—</b></div>
+          </div>
+          <button class="btn danger" style="margin-left:auto" onclick="localStorage.clear();window.location.href='home.html'">Logout</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <nav class="navbar">
+    <div class="bar">
+      <a class="navlink" data-page="home" href="home.html"><span>Home</span></a>
+      <a class="navlink active" data-page="dash" href="index.html"><span>Dashboard</span></a>
+      <a class="navlink" data-page="map" href="map.html"><span>Map</span></a>
+      <a class="navlink" data-page="sos" href="sos.html"><span>SOS</span></a>
+    </div>
+  </nav>
+</body>
+</html>

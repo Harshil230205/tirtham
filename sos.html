@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Pilgrimage Planner • SOS</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <script src="app.js" defer></script>
+  <script defer>
+    document.addEventListener("DOMContentLoaded", ()=>{
+      requireAuth(); renderUserBadge(); highlightNav("sos");
+      const last = PP.get("pp_sos_last");
+      if(last){ document.getElementById("last").textContent = "Last SOS: "+new Date(Number(last)).toLocaleString(); }
+      document.getElementById("btnSOS").addEventListener("click", ()=>{
+        PP.set("pp_sos_last", Date.now());
+        alert("SOS sent to support team (demo). Stay safe.");
+        location.reload();
+      });
+    });
+  </script>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <div class="brand-badge">PP</div>
+      <div class="brand">Emergency Support</div>
+      <div class="user-avatar" style="margin-left:auto">U</div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="card">
+      <h3 class="card-title">Immediate Help</h3>
+      <p class="card-sub" id="last">No SOS sent yet.</p>
+      <div style="height:10px"></div>
+      <button id="btnSOS" class="btn danger block">Send SOS</button>
+      <div style="height:10px"></div>
+      <div class="row">
+        <a class="btn secondary block" href="tel:108">Call 108</a>
+        <a class="btn ghost block" href="tel:100">Call Police</a>
+      </div>
+      <div style="height:12px"></div>
+      <button class="btn ghost block" onclick="window.location.href='index.html'">Back to Dashboard</button>
+    </div>
+  </main>
+
+  <nav class="navbar">
+    <div class="bar">
+      <a class="navlink" data-page="dash" href="index.html"><span>Dashboard</span></a>
+      <a class="navlink" data-page="pass" href="pass.html"><span>Pass</span></a>
+      <a class="navlink" data-page="map" href="map.html"><span>Map</span></a>
+      <a class="navlink active" data-page="sos" href="sos.html"><span>SOS</span></a>
+    </div>
+  </nav>
+</body>
+</html>
