@@ -2,79 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Pilgrimage Planner • Booking</title>
-  <link rel="stylesheet" href="styles.css"/>
-  <script src="app.js" defer></script>
-  <script defer>
-    document.addEventListener("DOMContentLoaded", ()=>{
-      requireAuth(); renderUserBadge(); highlightNav("dash");
-      const temple = PP.get("pp_temple") || "Select a Temple";
-      document.querySelector("[data-temple]").textContent = temple;
-
-      // default date = tomorrow
-      const d = new Date(); d.setDate(d.getDate()+1);
-      document.getElementById("date").value = d.toISOString().split("T")[0];
-
-      document.getElementById("formBooking").addEventListener("submit",(e)=>{
-        e.preventDefault();
-        const date = e.target.date.value;
-        const time = e.target.time.value;
-        const members = e.target.members.value || "1";
-        const vehicles = e.target.vehicles.value || "0";
-        if(!date || !time){ alert("Please select date and time."); return; }
-        PP.set("pp_date", date);
-        PP.set("pp_time", time);
-        PP.set("pp_members", members);
-        PP.set("pp_vehicles", vehicles);
-        window.location.href="pass.html";
-      });
-    });
-  </script>
-</head>
-<body>
-  <header class="header">
-    <div class="header-inner">
-      <div class="brand-badge">PP</div>
-      <div class="brand">Booking</div>
-      <div class="user-avatar" style="margin-left:auto">U</div>
-    </div>
-  </header>
-
-  <main class="container">
-    <div class="card">
-      <h3 class="card-title" style="margin:0 0 4px" data-temple>Temple</h3>
-      <p class="card-sub">Select date, time slot and group details.</p>
-      <form id="formBooking" style="margin-top:10px">
-        <label class="label">Date</label>
-        <input id="date" name="date" type="date" class="input"/>
-
-        <label class="label">Time Slot</label>
-        <select name="time" class="input">
-          <option value="">Select time</option>
-          <option>08:00 - 09:00</option>
-          <option>09:00 - 10:00</option>
-          <option>10:00 - 11:00</option>
-          <option>11:00 - 12:00</option>
-          <option>15:00 - 16:00</option>
-          <option>16:00 - 17:00</option>
-        </select>
-
-        <div class="row">
-          <div style="flex:1">
-            <label class="label">Members</label>
-            <input class="input" name="members" type="number" min="1" value="1"/>
-          </div>
-          <div style="flex:1">
-            <label class="label">Vehicles</label>
-            <input class="input" name="vehicles" type="number" min="0" value="0"/>
-          </div>
-        </div>
-
-        <div style="height:12px"></div><!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Book Visit • Pilgrimage</title>
   <link rel="stylesheet" href="styles.css"/>
@@ -155,22 +82,5 @@
       window.location.href = 'pass.html'
     })
   </script>
-</body>
-</html>
-        <button class="btn block" type="submit">Confirm Booking</button>
-      </form>
-      <div style="height:8px"></div>
-      <button class="btn ghost block" onclick="history.back()">Back</button>
-    </div>
-  </main>
-
-  <nav class="navbar">
-    <div class="bar">
-      <a class="navlink" data-page="home" href="home.html"><span>Home</span></a>
-      <a class="navlink active" data-page="dash" href="index.html"><span>Dashboard</span></a>
-      <a class="navlink" data-page="map" href="map.html"><span>Map</span></a>
-      <a class="navlink" data-page="sos" href="sos.html"><span>SOS</span></a>
-    </div>
-  </nav>
 </body>
 </html>
