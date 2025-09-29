@@ -2,85 +2,67 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Pilgrimage Planner • Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Login • Pilgrimage</title>
   <link rel="stylesheet" href="styles.css"/>
-  <script src="app.js" defer></script>
-  <script defer>
-    document.addEventListener("DOMContentLoaded", ()=>{
-      // If already logged in, go to dashboard
-      if(PP.get("pp_user_id")) window.location.href="index.html";
-      const form = document.getElementById("loginForm");
-      form.addEventListener("submit", (e)=>{
-        e.preventDefault();
-        const name = form.name.value.trim();
-        const id   = form.userid.value.trim();
-        if(!name || !id){ alert("Please enter Name and User ID (e.g., phone/email)."); return; }
-        PP.set("pp_user_name", name);
-        PP.set("pp_user_id", id);
-        window.location.href = "index.html";
-      });
-    });
-  </script>
 </head>
 <body>
   <header class="header">
     <div class="header-inner">
-      <div class="brand-badge">PP</div>
-      <div class="brand">Pilgrimage Planner</div>
+      <div class="brand">
+        <div class="brand-badge">🛕</div><div>Pilgrimage</div>
+      </div>
+      <div class="top-actions">
+        <a class="link-ghost" href="index.html">Back</a>
+      </div>
     </div>
   </header>
 
   <main class="container">
-    <div class="hero" style="margin:0 0 16px">
-      <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/screen.png-1beGtszJSaaWov1SiNxawepUx2QLnr.jpeg" alt="Green forest path leading to sacred journeys"/>
-      <div class="overlay"></div>
-      <div class="content">
-        <h1>Discover Sacred Journeys</h1>
-        <p>Login and plan your visit with ease.</p>
-      </div>
-    </div>
-
-    <div class="card">
-      <h2 class="card-title">Welcome</h2>
-      <p class="card-sub">Enter your details to continue. Prototype only — data stays on your device.</p>
-      <form id="loginForm" style="margin-top:10px">
-        <label class="label" for="name">Full Name</label>
-        <input id="name" name="name" class="input" placeholder="e.g., Riya Patel" autocomplete="name"/>
-
-        <label class="label" for="userid">User ID (Phone or Email)</label>
-        <input id="userid" name="userid" class="input" placeholder="e.g., +91 98xxxxxx / you@example.com" autocomplete="username"/>
-
-        <div style="height:10px"></div>
-        <button class="btn block" type="submit">Login</button>
-      </form>
-
-      <div style="height:12px"></div>
-      <button class="btn ghost block" onclick="window.location.href='index.html'">Continue as Guest</button>
-    </div>
-
-    <div style="height:18px"></div>
-    <div class="item">
-      <img src="https://images.unsplash.com/photo-1523419409543-a7d979fd1d3f?q=80&w=400" alt="Temple preview"/>
+    <h1 class="section-title">Login / Register</h1>
+    <form class="card" id="loginForm">
       <div>
-        <h4>Why use this app?</h4>
-        <p>Book slots, get a digital pass with QR, navigate and access SOS — all in one place.</p>
+        <label for="nm">Full Name</label>
+        <input id="nm" required placeholder="Your name"/>
       </div>
-    </div>
+      <div style="height:10px"></div>
+      <div>
+        <label for="uid">User ID</label>
+        <div class="row">
+          <input id="uid" placeholder="e.g., PP-83412" />
+          <button type="button" class="btn-secondary" id="gen">Generate</button>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <button type="submit">Save & Continue</button>
+    </form>
+    <p class="notice">We only store these values locally on your device. No server calls.</p>
   </main>
 
-  <nav class="navbar">
-    <div class="bar">
-      <a class="navlink active" data-page="home" href="home.html">
-        <span>Home</span>
-      </a>
-      <a class="navlink" data-page="dash" href="index.html">
-        <span>Dashboard</span>
-      </a>
-      <a class="navlink" data-page="sos" href="sos.html">
-        <span>SOS</span>
-      </a>
+  <nav class="footer-nav">
+    <div class="footer-wrap">
+      <a class="tab" href="index.html">Home</a>
+      <a class="tab" href="booking.html">Book</a>
+      <a class="tab" href="pass.html">Pass</a>
+      <a class="tab" href="map.html">Map</a>
+      <a class="tab" href="sos.html">SOS</a>
     </div>
   </nav>
+
+  <script src="app.js"></script>
+  <script>
+    document.getElementById('gen').addEventListener('click', ()=>{
+      const v = 'PP-' + Math.floor(100000 + Math.random()*899999)
+      document.getElementById('uid').value = v
+    })
+    document.getElementById('loginForm').addEventListener('submit', (e)=>{
+      e.preventDefault()
+      const n = document.getElementById('nm').value.trim()
+      const u = document.getElementById('uid').value.trim() || ('PP-' + Math.floor(100000 + Math.random()*899999))
+      saveLogin(n, u)
+      updateAuthUI()
+      window.location.href = 'index.html'
+    })
+  </script>
 </body>
 </html>

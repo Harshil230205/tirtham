@@ -71,7 +71,92 @@
           </div>
         </div>
 
-        <div style="height:12px"></div>
+        <div style="height:12px"></div><!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Book Visit • Pilgrimage</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <div class="brand"><div class="brand-badge">🛕</div><div>Pilgrimage</div></div>
+      <div class="top-actions">
+        <a class="link-ghost" href="home.html" data-login-btn>Login</a>
+        <button class="btn-secondary hidden" data-logout-btn>Logout</button>
+        <div class="top-avatar hidden" data-avatar>A</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1 class="section-title">Select Destination</h1>
+    <div class="grid grid-2">
+      <button class="card" type="button" data-t="Temple of Serenity">
+        <img src="https://images.unsplash.com/photo-1544989164-31dc3c645987?q=80&w=800&auto=format&fit=crop" alt="Temple"/>
+        <strong>Temple of Serenity</strong><p class="muted">Peaceful & serene.</p>
+      </button>
+      <button class="card" type="button" data-t="Sacred River Retreat">
+        <img src="https://images.unsplash.com/photo-1562514948-6955a7db33f5?q=80&w=800&auto=format&fit=crop" alt="River"/>
+        <strong>Sacred River Retreat</strong><p class="muted">Nature & reflection.</p>
+      </button>
+    </div>
+
+    <div class="divider"></div>
+
+    <h2 class="section-title">Pick Date & Time</h2>
+    <form class="card" id="bookForm">
+      <div><label for="date">Date</label><input id="date" type="date" required></div>
+      <div style="height:10px"></div>
+      <div><label for="time">Time</label><input id="time" type="time" required></div>
+      <div style="height:10px"></div>
+      <div class="grid grid-2">
+        <div><label for="members">Members</label><input id="members" type="number" min="1" value="1"></div>
+        <div><label for="vehicle">Vehicle</label><select id="vehicle"><option>None</option><option>Car</option><option>Bus</option><option>Bike</option></select></div>
+      </div>
+      <div class="divider"></div>
+      <button type="submit" class="btn-success">Confirm Booking</button>
+    </form>
+    <p class="notice">Destination: <strong id="selT">Not selected</strong></p>
+  </main>
+
+  <nav class="footer-nav">
+    <div class="footer-wrap">
+      <a class="tab" href="index.html">Home</a>
+      <a class="tab active" href="booking.html">Book</a>
+      <a class="tab" href="pass.html">Pass</a>
+      <a class="tab" href="map.html">Map</a>
+      <a class="tab" href="sos.html">SOS</a>
+    </div>
+  </nav>
+
+  <script src="app.js"></script>
+  <script>
+    let selected = getKV('pp_temple') || ''
+    const selEl = document.getElementById('selT')
+    function choose(t){ selected = t; selEl.textContent = t; setKV('pp_temple', t) }
+    document.querySelectorAll('[data-t]').forEach(b=>{
+      b.addEventListener('click', ()=> choose(b.getAttribute('data-t')))
+    })
+    if(selected) selEl.textContent = selected
+
+    document.getElementById('bookForm').addEventListener('submit', (e)=>{
+      e.preventDefault()
+      if(!selected){ alert('Please select a destination'); return }
+      saveBooking({
+        temple:selected,
+        date: document.getElementById('date').value,
+        time: document.getElementById('time').value,
+        members: document.getElementById('members').value,
+        vehicle: document.getElementById('vehicle').value
+      })
+      window.location.href = 'pass.html'
+    })
+  </script>
+</body>
+</html>
         <button class="btn block" type="submit">Confirm Booking</button>
       </form>
       <div style="height:8px"></div>

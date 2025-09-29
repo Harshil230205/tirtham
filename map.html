@@ -2,52 +2,48 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Pilgrimage Planner • Map</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Map • Pilgrimage</title>
   <link rel="stylesheet" href="styles.css"/>
-  <script src="app.js" defer></script>
-  <script defer>
-    document.addEventListener("DOMContentLoaded", ()=>{
-      requireAuth(); renderUserBadge(); highlightNav("map");
-      const temple = PP.get("pp_temple") || "Temple";
-      document.getElementById("title").textContent = "Map • " + temple;
-      const q = encodeURIComponent(temple);
-      document.getElementById("gmaps").href = "https://www.google.com/maps/search/?api=1&query="+q;
-      // Basic OpenStreetMap embed focused on a general area; user can still open full map.
-      document.getElementById("osm").src = "https://www.openstreetmap.org/export/embed.html?bbox=68.0,6.0,98.0,37.0&layer=mapnik&marker=21.0,78.0";
-    });
-  </script>
+  <style>
+    .map-embed{border:0;width:100%;height:280px;border-radius:12px}
+  </style>
 </head>
 <body>
   <header class="header">
     <div class="header-inner">
-      <div class="brand-badge">PP</div>
-      <div class="brand" id="title">Map</div>
-      <div class="user-avatar" style="margin-left:auto">U</div>
+      <div class="brand"><div class="brand-badge">🛕</div><div>Pilgrimage</div></div>
+      <div class="top-actions">
+        <a class="link-ghost" href="home.html" data-login-btn>Login</a>
+        <button class="btn-secondary hidden" data-logout-btn>Logout</button>
+        <div class="top-avatar hidden" data-avatar>A</div>
+      </div>
     </div>
   </header>
 
   <main class="container">
+    <h1 class="section-title">Route & Parking</h1>
     <div class="card">
-      <h3 class="card-title">Directions</h3>
-      <p class="card-sub">Open interactive map and navigation.</p>
-      <div style="height:10px"></div>
-      <iframe id="osm" title="Map" style="width:100%;height:260px;border:1px solid #e5e7eb;border-radius:12px"></iframe>
-      <div style="height:10px"></div>
+      <p class="muted">View location and open navigation.</p>
+      <iframe class="map-embed" src="https://www.openstreetmap.org/export/embed.html?bbox=72.80%2C21.10%2C72.85%2C21.13&layer=mapnik" aria-label="Map"></iframe>
+      <div class="divider"></div>
       <div class="row">
-        <a id="gmaps" class="btn block" target="_blank" rel="noopener">Open in Google Maps</a>
-        <button class="btn ghost block" onclick="window.location.href='pass.html'">Back to Pass</button>
+        <a class="btn-secondary" href="https://maps.google.com/?q=temple" target="_blank" rel="noreferrer">Open in Google Maps</a>
+        <a class="btn-secondary" href="pass.html">View Pass</a>
       </div>
     </div>
   </main>
 
-  <nav class="navbar">
-    <div class="bar">
-      <a class="navlink" data-page="dash" href="index.html"><span>Dashboard</span></a>
-      <a class="navlink" data-page="pass" href="pass.html"><span>Pass</span></a>
-      <a class="navlink active" data-page="map" href="map.html"><span>Map</span></a>
-      <a class="navlink" data-page="sos" href="sos.html"><span>SOS</span></a>
+  <nav class="footer-nav">
+    <div class="footer-wrap">
+      <a class="tab" href="index.html">Home</a>
+      <a class="tab" href="booking.html">Book</a>
+      <a class="tab" href="pass.html">Pass</a>
+      <a class="tab active" href="map.html">Map</a>
+      <a class="tab" href="sos.html">SOS</a>
     </div>
   </nav>
+
+  <script src="app.js"></script>
 </body>
 </html>

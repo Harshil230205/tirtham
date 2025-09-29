@@ -2,120 +2,72 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Pilgrimage Planner • Pass</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Your Pass • Pilgrimage</title>
   <link rel="stylesheet" href="styles.css"/>
-  <script src="app.js" defer></script>
-  <script defer>
-    function downloadURI(uri, name){
-      const link = document.createElement("a");
-      link.href = uri; link.download = name;
-      document.body.appendChild(link); link.click(); link.remove();
-    }
-    document.addEventListener("DOMContentLoaded", ()=>{
-      requireAuth(); renderUserBadge(); highlightNav("dash");
-
-      const fields = ["pp_temple","pp_date","pp_time","pp_members","pp_vehicles"];
-      const hasBooking = fields.every(k=>PP.get(k));
-      if(!hasBooking){ document.getElementById("warn").style.display="block"; }
-
-      const userId = PP.get("pp_user_id");
-      const userName = PP.get("pp_user_name");
-      const temple = PP.get("pp_temple");
-      const date = PP.get("pp_date");
-      const time = PP.get("pp_time");
-      const members = PP.get("pp_members");
-      const vehicles = PP.get("pp_vehicles");
-
-      document.querySelector("[data-temple]").textContent = temple || "-";
-      document.querySelector("[data-when]").textContent = (date||"-")+" • "+(time||"-");
-      document.querySelector("[data-meta]").textContent = "Members: "+(members||"1")+"  •  Vehicles: "+(vehicles||"0");
-
-      // live QR preview
-      const qrCanvas = document.getElementById("qr");
-      drawPseudoQR(qrCanvas, userId || temple || "PASS", 220);
-
-      // build preview image for the card
-      const dataURL = generatePassPNG({userId,userName,temple,date,time,members,vehicles});
-      const img = document.getElementById("preview");
-      img.src = dataURL;
-
-      document.getElementById("btnDownload").addEventListener("click", ()=>{
-        const png = generatePassPNG({userId,userName,temple,date,time,members,vehicles});
-        downloadURI(png, "Pilgrimage-Pass.png");
-      });
-
-      document.getElementById("btnMap").addEventListener("click", ()=>{
-        window.location.href="map.html";
-      });
-
-      document.getElementById("btnCalendar").addEventListener("click", ()=>{
-        // Small ICS - simple text, still no JSON used
-        const uid = (Date.now()+"@pp");
-        const start = (date||"").replaceAll("-","")+"T"+(time||"09:00").replace(":","")+"00";
-        const end = (date||"").replaceAll("-","")+"T"+(time||"10:00").replace(":","")+"00";
-        const ics = "BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nUID:"+uid+
-          "\nDTSTAMP:"+start+"\nDTSTART:"+start+"\nDTEND:"+end+
-          "\nSUMMARY:Pilgrimage Visit - "+(temple||"Temple")+
-          "\nDESCRIPTION:Pass for "+(userName||"Guest")+" (User ID: "+(userId||"-")+")\nEND:VEVENT\nEND:VCALENDAR";
-        const blob = new Blob([ics],{type:"text/calendar"});
-        downloadURI(URL.createObjectURL(blob), "pilgrimage.ics");
-      });
-    });
-  </script>
 </head>
 <body>
   <header class="header">
     <div class="header-inner">
-      <div class="brand-badge">PP</div>
-      <div class="brand">Your Pass</div>
-      <div class="user-avatar" style="margin-left:auto">U</div>
+      <div class="brand"><div class="brand-badge">🛕</div><div>Pilgrimage</div></div>
+      <div class="top-actions">
+        <a class="link-ghost" href="home.html" data-login-btn>Login</a>
+        <button class="btn-secondary hidden" data-logout-btn>Logout</button>
+        <div class="top-avatar hidden" data-avatar>A</div>
+      </div>
     </div>
   </header>
 
-  <main class="container pass-wrap">
-    <div id="warn" class="card" style="display:none;background:#fff7ed;border-color:#fed7aa">
-      <div class="card-title" style="color:#9a3412">No booking found</div>
-      <p class="card-sub">Please select a destination and confirm your booking first.</p>
-    </div>
-
-    <div class="pass-card">
-      <div class="pass-head">
-        <div>
-          <div class="badge">Booking Confirmed</div>
-          <h3 class="card-title" data-temple>Temple</h3>
-          <div class="meta" data-when>—</div>
-          <div class="meta" data-meta>—</div>
-        </div>
-        <canvas id="qr" width="220" height="220" class="qr-preview" aria-label="QR preview"></canvas>
-      </div>
-
-      <div style="height:10px"></div>
-      <img id="preview" class="preview-img" alt="Pass card preview image"/>
-      <div style="height:10px"></div>
-
+  <main class="container">
+    <h1 class="section-title">Digital Pass</h1>
+    <div class="card">
+      <div class="kv"><strong>User ID</strong><span id="uid">—</span></div>
+      <div class="qr-preview"><canvas id="qr" width="180" height="180" aria-label="QR preview"></canvas></div>
+      <div class="divider"></div>
+      <div class="kv"><strong>Name</strong><span id="nm">—</span></div>
+      <div class="kv"><strong>Temple</strong><span id="temple">—</span></div>
+      <div class="kv"><strong>Date</strong><span id="date">—</span></div>
+      <div class="kv"><strong>Time</strong><span id="time">—</span></div>
+      <div class="kv"><strong>Members</strong><span id="members">—</span></div>
+      <div class="kv"><strong>Vehicle</strong><span id="vehicle">—</span></div>
+      <div class="divider"></div>
       <div class="row">
-        <button class="btn success block" id="btnDownload">Download Pass (PNG)</button>
-        <button class="btn secondary block" id="btnCalendar">Add to Calendar</button>
-      </div>
-      <div style="height:8px"></div>
-      <div class="row">
-        <button class="btn ghost block" id="btnMap">Open Map</button>
-        <button class="btn danger block" onclick="window.location.href='sos.html'">SOS</button>
+        <button class="btn-success" data-download-pass>Download Pass</button>
+        <a class="btn-secondary" href="booking.html">Edit Booking</a>
       </div>
     </div>
-
-    <div style="height:14px"></div>
-    <button class="btn ghost block" onclick="window.location.href='index.html'">Back to Dashboard</button>
+    <p class="notice">The downloaded PNG (1200×720) includes the QR-style code and your User ID on the top for better scanning visibility.</p>
   </main>
 
-  <nav class="navbar">
-    <div class="bar">
-      <a class="navlink" data-page="dash" href="index.html"><span>Dashboard</span></a>
-      <a class="navlink active" data-page="pass" href="pass.html"><span>Pass</span></a>
-      <a class="navlink" data-page="map" href="map.html"><span>Map</span></a>
-      <a class="navlink" data-page="sos" href="sos.html"><span>SOS</span></a>
+  <nav class="footer-nav">
+    <div class="footer-wrap">
+      <a class="tab" href="index.html">Home</a>
+      <a class="tab" href="booking.html">Book</a>
+      <a class="tab active" href="pass.html">Pass</a>
+      <a class="tab" href="map.html">Map</a>
+      <a class="tab" href="sos.html">SOS</a>
     </div>
   </nav>
+
+  <script src="app.js"></script>
+  <script>
+    const uid=getKV('pp_userId')||'GUEST'
+    const name=getKV('pp_name')||'Guest'
+    const temple=getKV('pp_temple')||'Any Temple'
+    const date=getKV('pp_date')||'—'
+    const time=getKV('pp_time')||'—'
+    const members=getKV('pp_members')||'1'
+    const vehicle=getKV('pp_vehicle')||'None'
+
+    document.getElementById('uid').textContent=uid
+    document.getElementById('nm').textContent=name
+    document.getElementById('temple').textContent=temple
+    document.getElementById('date').textContent=date
+    document.getElementById('time').textContent=time
+    document.getElementById('members').textContent=members
+    document.getElementById('vehicle').textContent=vehicle
+
+    const c=document.getElementById('qr'); drawPseudoQR(c, uid + '|' + temple + '|' + date + ' ' + time)
+  </script>
 </body>
 </html>

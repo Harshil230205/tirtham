@@ -2,55 +2,58 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Pilgrimage Planner • SOS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>SOS • Pilgrimage</title>
   <link rel="stylesheet" href="styles.css"/>
-  <script src="app.js" defer></script>
-  <script defer>
-    document.addEventListener("DOMContentLoaded", ()=>{
-      requireAuth(); renderUserBadge(); highlightNav("sos");
-      const last = PP.get("pp_sos_last");
-      if(last){ document.getElementById("last").textContent = "Last SOS: "+new Date(Number(last)).toLocaleString(); }
-      document.getElementById("btnSOS").addEventListener("click", ()=>{
-        PP.set("pp_sos_last", Date.now());
-        alert("SOS sent to support team (demo). Stay safe.");
-        location.reload();
-      });
-    });
-  </script>
 </head>
 <body>
   <header class="header">
     <div class="header-inner">
-      <div class="brand-badge">PP</div>
-      <div class="brand">Emergency Support</div>
-      <div class="user-avatar" style="margin-left:auto">U</div>
+      <div class="brand"><div class="brand-badge">🛕</div><div>Pilgrimage</div></div>
+      <div class="top-actions">
+        <a class="link-ghost" href="home.html" data-login-btn>Login</a>
+        <button class="btn-secondary hidden" data-logout-btn>Logout</button>
+        <div class="top-avatar hidden" data-avatar>A</div>
+      </div>
     </div>
   </header>
 
-  <main class="container">
-    <div class="card">
-      <h3 class="card-title">Immediate Help</h3>
-      <p class="card-sub" id="last">No SOS sent yet.</p>
-      <div style="height:10px"></div>
-      <button id="btnSOS" class="btn danger block">Send SOS</button>
-      <div style="height:10px"></div>
-      <div class="row">
-        <a class="btn secondary block" href="tel:108">Call 108</a>
-        <a class="btn ghost block" href="tel:100">Call Police</a>
+  <main class="container center">
+    <div class="card" style="text-align:center">
+      <h1 class="section-title">Emergency Support</h1>
+      <p class="muted">Press SOS to log an alert locally and open phone options.</p>
+      <button class="btn-danger" id="sosBtn">Send SOS</button>
+      <div class="divider"></div>
+      <div id="log" class="notice">No SOS sent yet.</div>
+      <div class="divider"></div>
+      <div class="row center" style="justify-content:center">
+        <a class="btn-secondary" href="tel:112">Call 112</a>
+        <a class="btn-secondary" href="tel:100">Call 100</a>
       </div>
-      <div style="height:12px"></div>
-      <button class="btn ghost block" onclick="window.location.href='index.html'">Back to Dashboard</button>
     </div>
   </main>
 
-  <nav class="navbar">
-    <div class="bar">
-      <a class="navlink" data-page="dash" href="index.html"><span>Dashboard</span></a>
-      <a class="navlink" data-page="pass" href="pass.html"><span>Pass</span></a>
-      <a class="navlink" data-page="map" href="map.html"><span>Map</span></a>
-      <a class="navlink active" data-page="sos" href="sos.html"><span>SOS</span></a>
+  <nav class="footer-nav">
+    <div class="footer-wrap">
+      <a class="tab" href="index.html">Home</a>
+      <a class="tab" href="booking.html">Book</a>
+      <a class="tab" href="pass.html">Pass</a>
+      <a class="tab" href="map.html">Map</a>
+      <a class="tab active" href="sos.html">SOS</a>
     </div>
   </nav>
+
+  <script src="app.js"></script>
+  <script>
+    const out=document.getElementById('log')
+    document.getElementById('sosBtn').addEventListener('click', ()=>{
+      const t = new Date().toLocaleString()
+      setKV('pp_sos_last', t)
+      out.textContent = 'SOS sent at ' + t + '. This is a prototype log on your device.'
+      alert('SOS logged: ' + t)
+    })
+    const last = getKV('pp_sos_last')
+    if(last){ out.textContent='Last SOS: '+last }
+  </script>
 </body>
 </html>
